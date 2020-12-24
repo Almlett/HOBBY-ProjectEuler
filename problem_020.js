@@ -9,24 +9,24 @@ Find the sum of the digits in the number 100!
 
 */
 
-
-let result = 1;
-
-let fact = val => {
-    if (val > 0){
-        result = result * val;
-        fact(val - 1);
+const lut = [1n, 1n];
+            
+// returns factorial as BigInt instead of Number
+function factorial (n) {
+    for (let i = lut.length; i <= n; i++) {
+    lut.push(BigInt(i) * lut[i - 1]);
     }
-};
 
-fact(100);
-const allDigits = new String(BigInt(result).toString())
-console.log(allDigits.toString())
+    return lut[n];
+}
 
-let sum = 0;
+// first time will require computation
+let allDigits = factorial(100).toString();
+
+sum = 0;
 for(index in allDigits){
     let digit = parseInt(allDigits[index]);
     sum += digit;
-    console.log(`${index}- previousDigit: ${digit} - sum: ${sum}`)
+    //console.log(`${index}- previousDigit: ${digit} - sum: ${sum}`)
 }
 console.log(sum)
