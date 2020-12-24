@@ -3,10 +3,10 @@
 """
 def new_line(first_line, second_line):
     """
-    Generar una nueva linea a partir de 2
+        Generar una nueva linea a partir de 2
     """
-    #first_line = [x,...,n]
-    #second_line = [x,...,n + 1]
+    # first_line = [x,...,n]
+    # second_line = [x,...,n + 1]
     result = []
     for index, item in enumerate(first_line):
         if second_line[index] + item > second_line[index + 1] + item:
@@ -17,7 +17,7 @@ def new_line(first_line, second_line):
 
 def update_pyramid(values):
     """
-    Clase para actualizar las ultimas dos lineas de la piramide
+        Clase para actualizar las ultimas dos lineas de la piramide
     """
     len_pyramid = len(values)
     if len_pyramid > 1:
