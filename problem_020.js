@@ -14,7 +14,7 @@ const lut = [1n, 1n];
 // returns factorial as BigInt instead of Number
 function factorial (n) {
     for (let i = lut.length; i <= n; i++) {
-    lut.push(BigInt(i) * lut[i - 1]);
+        lut.push(BigInt(i) * lut[i - 1]);
     }
 
     return lut[n];
