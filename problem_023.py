@@ -33,7 +33,6 @@ def get_abundant_sums():
         for y in abundant_nums:
             if x + y <= 28123:
                 result.append(x + y)
-    print("TERMINO1")
     return result
 
 def get_not_abundants_nums():
