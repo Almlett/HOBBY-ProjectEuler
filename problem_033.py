@@ -8,35 +8,65 @@ There are exactly four non-trivial examples of this type of fraction, less than 
 
 If the product of these four fractions is given in its lowest common terms, find the value of the denominator.
 """
+import time
 
-for first_digit in range(10, 100):
-    for second_digit in range(10, 100):
-        tmp = str(first_digit)
-        first_digit_split = [item for item in tmp]
-        tmp = str(second_digit)
-        second_digit_split = [item for item in tmp]
-        # if first_digit_split[0] != first_digit_split[1] and second_digit_split[0] != second_digit_split[1] and first_digit_split[1] != "0" and second_digit_split[1] != "0":
+start_time = time.time()
 
-        for item in first_digit_split:
-            num1 = 0
-            num2 = 0
-            if item in second_digit_split:
-                second_digit_split.remove(item)
-                first_digit_split.remove(item)
-                num1 = int(first_digit_split[0])
-                num2 = int(second_digit_split[0])
-                try:
-                    if first_digit/second_digit == num1/num2 and num1 != num2 and num1 != 0 and num1 != 1 and num2 != 0 and num2 != 1 and int(item) != 0 and int(item) != 1:
+def gcd(a, b):
+    """
+    Calculates the greatest common divisor (GCD) of two numbers 'a' and 'b' using Euclid's algorithm.
+    """
+    while b != 0:
+        a, b = b, a % b
+    return a
 
-                        print("{}/{}".format(second_digit, first_digit))
-                except Exception:
-                    pass
+def cancel_digits(numerator, denominator):
+    """
+    Cancels a common digit between the numerator and denominator.
+    Returns the simplified numerator and denominator as a tuple.
+    """
+    num_str = str(numerator)
+    den_str = str(denominator)
+    
+    for digit in num_str:
+        if digit in den_str:
+            num_str = num_str.replace(digit, '', 1)
+            den_str = den_str.replace(digit, '', 1)
+            if den_str != '0':  # Avoid division by zero
+                new_numerator = int(num_str)
+                new_denominator = int(den_str)
+                return new_numerator, new_denominator
+    return numerator, denominator
 
-        ''' try:
-            if first_digit/second_digit == int(first_digit_split[0])/int(second_digit_split[0]) and first_digit != second_digit and first_digit != 0 and second_digit != 0 and first_digit != 1 and second_digit != 1:
-                print(first_digit, second_digit)
-                print("ASDas")
-                print(int(first_digit_split),
-                        int(second_digit_split))
-        except Exception:
-            pass '''
+def find_curious_fractions():
+    curious_fractions = []
+    for numerator in range(10, 100):
+        for denominator in range(numerator + 1, 100):  # Avoid trivial examples
+            # Skip fractions that are multiples of 10 (trivial examples)
+            if numerator % 10 == 0 and denominator % 10 == 0:
+                continue
+            
+            simplified_numerator, simplified_denominator = cancel_digits(numerator, denominator)
+            if simplified_numerator != numerator and simplified_denominator != denominator:
+                if numerator / denominator == simplified_numerator / simplified_denominator:
+                    curious_fractions.append((numerator, denominator))
+    return curious_fractions
+
+curious_fractions = find_curious_fractions()
+
+# Calculate the product of the fractions in its lowest common terms
+numerator_product = 1
+denominator_product = 1
+
+for fraction in curious_fractions:
+    numerator_product *= fraction[0]
+    denominator_product *= fraction[1]
+
+# Find the greatest common divisor (GCD) of the numerator and denominator to simplify the fraction
+gcd_value = gcd(numerator_product, denominator_product)
+simplified_numerator = numerator_product // gcd_value
+result = denominator_product // gcd_value
+
+print("Result is:", result)
+print("--- %s seconds ---" % (time.time() - start_time))
+
